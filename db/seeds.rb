@@ -22,10 +22,10 @@ location = [
   "Madison, WI"
 ]
 
-User.where(email: "bob@test.com").first_or_create(email: "Bob Bobi", password: "password")
+User.where(email: "bob@test.com").first_or_create(email: "bob@test.com", name:"Bob Green", password: "password")
 
 10.times do
-  User.create(email: Faker::Internet.email, password: "password")
+  User.create(email: Faker::Internet.email, password: "password", name: Faker::Name.name)
 end
 
 100.times do

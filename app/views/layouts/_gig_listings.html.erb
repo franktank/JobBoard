@@ -1,0 +1,79 @@
+<div class="container">
+    <div class="single">
+	   <div class="col-md-9 single_right">
+	      <div class="but_list">
+	       <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+			<ul id="myTab" class="nav nav-tabs" role="tablist">
+			  <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Gigs</a></li>
+			  <span class ="pull-right">
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+						Sort by
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><%= link_to "Oldest", gigs_path(sort_by: "oldest") %> </li>
+						<li><%= link_to "Newest", gigs_path(sort_by: "newest") %> </li>
+						<li><%= link_to "Name", gigs_path(sort_by: "name") %> </li>
+					</ul>
+				</div>
+				</span>
+		   </ul>
+		<div id="myTabContent" class="tab-content">
+		  <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+
+				<% @gigs.each do |gig| %>
+				<div class="tab_grid">
+			    <div class="jobs-item with-thumb">
+				    <div class="jobs_right">
+						<div class="date"><%= gig.created_at.strftime("%d") %> <span><%= gig.created_at.strftime("%b") %></span></div>
+						<div class="date_desc"><h6 class="title"><%=link_to gig.name, gig %></h6>
+						  <span class="meta"><i class= "fa fa-list"></i> <%= gig.location %> | <small class="label label-success"><%= number_to_currency(gig.budget, precision: 0) %></small></span>
+						</div>
+						<div class="clearfix"> </div>
+                        <ul class="top-btns">
+							<li><a href="#" class="fa fa-plus toggle"></a></li>
+							<li><a href="#" class="fa fa-star"></a></li>
+							<li><a href="#" class="fa fa-link"></a></li>
+						</ul>
+						<p class="description"><%= h truncate(gig.description, length: 500)%></p>
+          	<p>Skills: <%= gig.skills.map { |s| s.name }.join(", ") %></p>
+						<td><%= gig.category.name %></td>
+						</div>
+					<div class="clearfix"> </div>
+				</div>
+			 </div>
+			<% end %>
+
+
+			</div>
+	  </div>
+     </div>
+    </div>
+    <ul class="pagination jobs_pagination">
+		<%= will_paginate @gigs %>
+	</ul>
+   </div>
+   <br />
+   <div class="col-md-3">
+	   	  <div class="widget_search">
+			<h5 class="widget-title">Advanced Search</h5>
+		<%= form_tag search_gigs_path, method: :get do |f| %>
+		<label>Search</label>
+		<div class="form-group">
+			<%= text_field_tag :search, nil, placeholder: "Search...", class: "form-control input-lg"%>
+		</div>
+		<label>Category</label>
+		<div class="form-group">
+			<%= select_tag :category, options_from_collection_for_select(Category.all, :id, :name), class: "form-control input-lg" %>
+		</div>
+		<label>Location</label>
+		<div class="form-group">
+			<%= text_field_tag :location, nil, placeholder: "Los Angeles, Portland,..", class: "form-control input-lg"%>
+		</div>
+		<br/>
+			<%= submit_tag "Search", class: "btn btn-primary input-lg btn-block" %>
+		<% end %>
+		<div class="clearfix"> </div>
+</div>
+</div>
